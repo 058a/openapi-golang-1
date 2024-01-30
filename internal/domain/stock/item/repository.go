@@ -47,8 +47,11 @@ func (r *Repository) Get(id Id) (*Model, error) {
 		return &Model{}, err
 	}
 
-	model := NewModel(id.ToUuid(), data.Name)
-
+	model := &Model{
+		id:      id,
+		name:    data.Name,
+		deleted: data.Deleted,
+	}
 	return model, nil
 }
 

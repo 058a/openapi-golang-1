@@ -26,11 +26,12 @@ func (m *Model) GetName() string {
 	return m.name
 }
 
-func (m *Model) IsDeleted() bool {
-	return m.deleted
-}
 func (m *Model) SetName(name string) {
 	m.name = name
+}
+
+func (m *Model) IsDeleted() bool {
+	return m.deleted
 }
 
 func (m *Model) Delete() {
