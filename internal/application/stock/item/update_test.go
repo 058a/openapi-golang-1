@@ -2,7 +2,6 @@ package item_test
 
 import (
 	"openapi/internal/application/stock/item"
-
 	domain "openapi/internal/domain/stock/item"
 	"openapi/internal/infrastructure/database"
 	"testing"
