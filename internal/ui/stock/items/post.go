@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"openapi/internal/application/stockitem"
-	"openapi/internal/domain/repository"
+	"openapi/internal/domain/stock/item"
 	"openapi/internal/infra/database"
 	oapicodegen "openapi/internal/infra/oapicodegen/stockitem"
 )
@@ -19,7 +19,7 @@ func Post(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	defer db.Close()
-	repository := &repository.StockItem{DB: db}
+	repository := &item.Repository{DB: db}
 
 	// Validation
 	req := &oapicodegen.PostStockItemJSONRequestBody{}
