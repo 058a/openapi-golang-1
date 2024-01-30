@@ -4,10 +4,10 @@ import "github.com/google/uuid"
 
 type Id uuid.UUID
 
-func (v Id) ToUuid() uuid.UUID {
-	return uuid.UUID(v)
+func (e Id) ToUuid() uuid.UUID {
+	return uuid.UUID(e)
 }
 
-func (v Id) ToString() string {
-	return uuid.UUID(v).String()
+func (e Id) ToString() string {
+	return uuid.UUID(e).String()
 }

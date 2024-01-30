@@ -9,7 +9,7 @@ import (
 )
 
 type IRepository interface {
-	Save(model *Model) error
+	Save(m *Model) error
 	Get(id Id) (*Model, error)
 	Find(id Id) (bool, error)
 }
@@ -19,11 +19,11 @@ type Repository struct {
 	Db *sql.DB
 }
 
-func (r *Repository) Save(model *Model) error {
+func (r *Repository) Save(m *Model) error {
 
 	data := &sqlboiler.StockItem{
-		ID:   model.GetId().ToUuid().String(),
-		Name: model.GetName(),
+		ID:   m.GetId().ToUuid().String(),
+		Name: m.GetName(),
 	}
 
 	err := data.Upsert(

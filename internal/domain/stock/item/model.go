@@ -18,21 +18,21 @@ func NewModel(id uuid.UUID, name string) *Model {
 	}
 }
 
-func (s *Model) GetId() Id {
-	return s.id
+func (m *Model) GetId() Id {
+	return m.id
 }
 
-func (s *Model) GetName() string {
-	return s.name
+func (m *Model) GetName() string {
+	return m.name
 }
 
-func (s *Model) IsDeleted() bool {
-	return s.deleted
+func (m *Model) IsDeleted() bool {
+	return m.deleted
 }
-func (s *Model) SetName(name string) {
-	s.name = name
+func (m *Model) SetName(name string) {
+	m.name = name
 }
 
-func (s *Model) Delete() {
-	s.deleted = true
+func (m *Model) Delete() {
+	m.deleted = true
 }
