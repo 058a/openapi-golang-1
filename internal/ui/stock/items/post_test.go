@@ -2,7 +2,7 @@ package items_test
 
 import (
 	"openapi/internal/infra/env"
-	oapicodegen "openapi/internal/infra/oapicodegen/stockitem"
+	oapicodegen "openapi/internal/infra/oapicodegen/stock"
 	"strings"
 	"testing"
 
@@ -82,7 +82,7 @@ func TestPostBadRequest1(t *testing.T) {
 	// Then
 	if postRes.StatusCode != http.StatusBadRequest {
 		t.Errorf("want %d, got %d", http.StatusBadRequest, postRes.StatusCode)
-	}	
+	}
 }
 
 func TestPostBadRequest2(t *testing.T) {
@@ -112,5 +112,5 @@ func TestPostBadRequest2(t *testing.T) {
 	// Then
 	if postRes.StatusCode != http.StatusBadRequest {
 		t.Errorf("want %d, got %d", http.StatusBadRequest, postRes.StatusCode)
-	}	
+	}
 }

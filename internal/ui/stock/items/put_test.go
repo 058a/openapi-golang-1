@@ -2,7 +2,7 @@ package items_test
 
 import (
 	"openapi/internal/infra/env"
-	oapicodegen "openapi/internal/infra/oapicodegen/stockitem"
+	oapicodegen "openapi/internal/infra/oapicodegen/stock"
 	"strings"
 	"testing"
 
@@ -82,7 +82,6 @@ func TestPutOk(t *testing.T) {
 		t.Errorf("want %d, got %d", http.StatusOK, putRes.StatusCode)
 	}
 }
-
 
 func TestPutNotFound(t *testing.T) {
 	// Setup

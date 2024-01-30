@@ -2,7 +2,7 @@ package items_test
 
 import (
 	"openapi/internal/infra/env"
-	oapicodegen "openapi/internal/infra/oapicodegen/stockitem"
+	oapicodegen "openapi/internal/infra/oapicodegen/stock"
 	"testing"
 
 	"bytes"

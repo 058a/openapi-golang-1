@@ -9,7 +9,7 @@ import (
 	"openapi/internal/application/stockitem"
 	"openapi/internal/domain/stock/item"
 	"openapi/internal/infra/database"
-	oapicodegen "openapi/internal/infra/oapicodegen/stockitem"
+	oapicodegen "openapi/internal/infra/oapicodegen/stock"
 )
 
 // Put is a function that handles the HTTP PUT request for updating an existing stock item.

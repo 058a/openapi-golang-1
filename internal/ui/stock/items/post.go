@@ -8,7 +8,7 @@ import (
 	"openapi/internal/application/stockitem"
 	"openapi/internal/domain/stock/item"
 	"openapi/internal/infra/database"
-	oapicodegen "openapi/internal/infra/oapicodegen/stockitem"
+	oapicodegen "openapi/internal/infra/oapicodegen/stock"
 )
 
 // PostStockItem is a function that handles the HTTP POST request for creating a new stock item.

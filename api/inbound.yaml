@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Inbound Item API
+  version: 1.0.0
+paths:
+  /inbound/items:
+    post:
+      summary: Create Inbound Item
+      description: Create Inbound Item
+      operationId: PostInboundItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewInboundItem"
+      responses:
+        "201":
+          $ref: "#/components/responses/Created"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /inbound/items/{inbounditemId}:
+    put:
+      summary: Update Inbound Item
+      description: Update Inbound Item
+      operationId: PutInboundItem
+      parameters:
+        - name: inbounditemId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/InboundItemId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewInboundItem"
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      summary: Delete Inbound Item
+      description: Delete Inbound Item
+      operationId: DeleteInboundItem
+      parameters:
+        - name: inbounditemId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/InboundItemId"
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+components:
+  responses:
+    OK:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InboundItem"
+    Created:
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InboundItem"
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BadRequestResponse"
+    NotFound:
+      description: Not Found
+    InternalServerError:
+      description: Internal Server Error
+  schemas:
+    BadRequestResponse:
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    InboundItem:
+      allOf:
+        - $ref: "#/components/schemas/InboundItemId"
+        - $ref: "#/components/schemas/NewInboundItem"
+    NewInboundItem:
+      allOf:
+        - $ref: "#/components/schemas/InboundItemName"
+    InboundItemId:
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-oapi-codegen-extra-tags:
+            validate: required
+    InboundItemName:
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minimum: 1
+          maximum: 100
+          x-oapi-codegen-extra-tags:
+            validate: required,gte=1,lt=100
