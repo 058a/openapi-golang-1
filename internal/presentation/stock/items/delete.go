@@ -22,13 +22,12 @@ func Delete(c echo.Context) error {
 	defer db.Close()
 	repository := &domain.Repository{Db: db}
 
-	// Validation
-	stockitemId := uuid.MustParse(c.Param("stockitemId"))
-	if stockitemId == uuid.Nil {
+	// Path Parameter Binding & Validation
+	id := uuid.MustParse(c.Param("stockitemId"))
+	if id == uuid.Nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid stock item id")
 	}
-
-	found, err := repository.Find(domain.Id(stockitemId))
+	found, err := repository.Find(domain.Id(id))
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
@@ -38,7 +37,7 @@ func Delete(c echo.Context) error {
 
 	// Main Process
 	reqDto := &application.DeleteRequestDto{
-		Id: stockitemId,
+		Id: id,
 	}
 	_, err = application.Delete(reqDto, repository)
 	if err != nil {

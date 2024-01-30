@@ -21,7 +21,7 @@ func Post(c echo.Context) error {
 	defer db.Close()
 	repository := &domain.Repository{Db: db}
 
-	// Validation
+	// Request Body Binding & Validation
 	req := &oapicodegen.PostStockItemJSONRequestBody{}
 	if err := c.Bind(&req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
