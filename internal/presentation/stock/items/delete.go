@@ -6,10 +6,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 
-	"openapi/internal/application/stockitem"
-	"openapi/internal/domain/stock/item"
-	"openapi/internal/infra/database"
-	oapicodegen "openapi/internal/infra/oapicodegen/stock"
+	application "openapi/internal/application/stock/item"
+	domain "openapi/internal/domain/stock/item"
+	"openapi/internal/infrastructure/database"
+	oapicodegen "openapi/internal/infrastructure/oapicodegen/stock"
 )
 
 // Delete is a function that handles the HTTP DELETE request for deleting an existing stock item.
@@ -20,7 +20,7 @@ func Delete(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	defer db.Close()
-	repository := &item.Repository{Db: db}
+	repository := &domain.Repository{Db: db}
 
 	// Validation
 	stockitemId := uuid.MustParse(c.Param("stockitemId"))
@@ -28,7 +28,7 @@ func Delete(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid stock item id")
 	}
 
-	found, err := repository.Find(item.Id(stockitemId))
+	found, err := repository.Find(domain.Id(stockitemId))
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
@@ -37,10 +37,10 @@ func Delete(c echo.Context) error {
 	}
 
 	// Main Process
-	reqDto := &stockitem.DeleteRequestDto{
+	reqDto := &application.DeleteRequestDto{
 		Id: stockitemId,
 	}
-	_, err = stockitem.Delete(reqDto, repository)
+	_, err = application.Delete(reqDto, repository)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}

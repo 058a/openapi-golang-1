@@ -1,4 +1,4 @@
-package stockitem
+package item
 
 import (
 	"github.com/google/uuid"

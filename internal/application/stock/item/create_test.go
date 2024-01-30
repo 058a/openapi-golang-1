@@ -1,9 +1,9 @@
-package stockitem_test
+package item_test
 
 import (
-	"openapi/internal/application/stockitem"
-	"openapi/internal/domain/stock/item"
-	"openapi/internal/infra/database"
+	"openapi/internal/application/stock/item"
+	domain "openapi/internal/domain/stock/item"
+	"openapi/internal/infrastructure/database"
 	"testing"
 
 	"github.com/google/uuid"
@@ -16,15 +16,15 @@ func TestCreateSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer db.Close()
-	repository := &item.Repository{Db: db}
+	repository := &domain.Repository{Db: db}
 
 	// Given
-	reqDto := &stockitem.CreateRequestDto{
+	reqDto := &item.CreateRequestDto{
 		Name: uuid.NewString(),
 	}
 
 	// When
-	resDto, err := stockitem.Create(reqDto, repository)
+	resDto, err := item.Create(reqDto, repository)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func TestCreateSuccess(t *testing.T) {
 		t.Errorf("expected %s, got %s", uuid.Nil, resDto.Id)
 	}
 
-	model, err := repository.Get(item.Id(resDto.Id))
+	model, err := repository.Get(domain.Id(resDto.Id))
 	if err != nil {
 		t.Fatal(err)
 	}

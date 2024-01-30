@@ -1,10 +1,10 @@
-package stockitem_test
+package item_test
 
 import (
-	"openapi/internal/application/stockitem"
+	"openapi/internal/application/stock/item"
 
-	"openapi/internal/domain/stock/item"
-	"openapi/internal/infra/database"
+	domain "openapi/internal/domain/stock/item"
+	"openapi/internal/infrastructure/database"
 	"testing"
 
 	"github.com/google/uuid"
@@ -17,28 +17,28 @@ func TestUpdateSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer db.Close()
-	repository := &item.Repository{Db: db}
+	repository := &domain.Repository{Db: db}
 
 	// Given
 	beforeName := uuid.NewString()
 	afterName := uuid.NewString()
 
-	reqCreateDto := &stockitem.CreateRequestDto{
+	reqCreateDto := &item.CreateRequestDto{
 		Name: beforeName,
 	}
 
-	resCreateDto, err := stockitem.Create(reqCreateDto, repository)
+	resCreateDto, err := item.Create(reqCreateDto, repository)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// When
-	reqUpdateDto := &stockitem.UpdateRequestDto{
+	reqUpdateDto := &item.UpdateRequestDto{
 		Id:   resCreateDto.Id,
 		Name: afterName,
 	}
 
-	resUpdateDto, err := stockitem.Update(reqUpdateDto, repository)
+	resUpdateDto, err := item.Update(reqUpdateDto, repository)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -48,7 +48,7 @@ func TestUpdateSuccess(t *testing.T) {
 		t.Errorf("expected not empty, actual empty")
 	}
 
-	model, err := repository.Get(item.Id(resCreateDto.Id))
+	model, err := repository.Get(domain.Id(resCreateDto.Id))
 	if err != nil {
 		t.Fatal(err)
 	}

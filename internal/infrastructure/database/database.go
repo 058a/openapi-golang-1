@@ -2,7 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"openapi/internal/infra/env"
+	"openapi/internal/infrastructure/env"
 
 	_ "github.com/lib/pq"
 )
@@ -13,7 +13,7 @@ func Open() (*sql.DB, error) {
 
 	db, err := sql.Open(driverName, dataSourceName)
 	if err != nil {
-			return nil, err
+		return nil, err
 	}
 
 	return db, nil

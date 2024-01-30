@@ -3,7 +3,7 @@ package item
 import (
 	"context"
 	"database/sql"
-	"openapi/internal/infra/sqlboiler"
+	"openapi/internal/infrastructure/sqlboiler"
 
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )

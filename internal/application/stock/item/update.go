@@ -1,4 +1,4 @@
-package stockitem
+package item
 
 import (
 	"openapi/internal/domain/stock/item"

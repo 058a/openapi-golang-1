@@ -1,8 +1,8 @@
 package api
 
 import (
-	"openapi/internal/infra/env"
-	oapicodegen "openapi/internal/infra/oapicodegen/hello"
+	"openapi/internal/infrastructure/env"
+	oapicodegen "openapi/internal/infrastructure/oapicodegen/hello"
 	"testing"
 
 	cmp "github.com/google/go-cmp/cmp"
@@ -13,7 +13,7 @@ import (
 )
 
 func TestGetSuccess(t *testing.T) {
-	res, err := http.Get(env.GetServiceUrl()+"")
+	res, err := http.Get(env.GetServiceUrl() + "")
 	if err != nil {
 		t.Fatal(err)
 	}

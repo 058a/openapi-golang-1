@@ -3,8 +3,8 @@ package item_test
 import (
 	"context"
 	"openapi/internal/domain/stock/item"
-	"openapi/internal/infra/database"
-	"openapi/internal/infra/sqlboiler"
+	"openapi/internal/infrastructure/database"
+	"openapi/internal/infrastructure/sqlboiler"
 	"testing"
 	"time"
 
