@@ -2,8 +2,7 @@ package stockitem_test
 
 import (
 	"openapi/internal/application/stockitem"
-	"openapi/internal/domain/entity"
-	"openapi/internal/domain/repository"
+	"openapi/internal/domain/stock/item"
 	"openapi/internal/infra/database"
 	"testing"
 
@@ -17,7 +16,7 @@ func TestCreateSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer db.Close()
-	repository := &repository.StockItem{DB: db}
+	repository := &item.Repository{DB: db}
 
 	// Given
 	reqDto := &stockitem.CreateRequestDto{
@@ -35,7 +34,7 @@ func TestCreateSuccess(t *testing.T) {
 		t.Errorf("expected %s, got %s", uuid.Nil, resDto.Id)
 	}
 
-	model, err := repository.Get(entity.StockItemId(resDto.Id))
+	model, err := repository.Get(item.Id(resDto.Id))
 	if err != nil {
 		t.Fatal(err)
 	}

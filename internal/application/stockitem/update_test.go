@@ -2,8 +2,8 @@ package stockitem_test
 
 import (
 	"openapi/internal/application/stockitem"
-	"openapi/internal/domain/entity"
-	"openapi/internal/domain/repository"
+
+	"openapi/internal/domain/stock/item"
 	"openapi/internal/infra/database"
 	"testing"
 
@@ -17,7 +17,7 @@ func TestUpdateSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer db.Close()
-	repository := &repository.StockItem{DB: db}
+	repository := &item.Repository{DB: db}
 
 	// Given
 	beforeName := uuid.NewString()
@@ -48,7 +48,7 @@ func TestUpdateSuccess(t *testing.T) {
 		t.Errorf("expected not empty, actual empty")
 	}
 
-	model, err := repository.Get(entity.StockItemId(resCreateDto.Id))
+	model, err := repository.Get(item.Id(resCreateDto.Id))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -2,13 +2,13 @@ package stockitem_test
 
 import (
 	"openapi/internal/application/stockitem"
-	"openapi/internal/domain/repository"
+
+	"openapi/internal/domain/stock/item"
 	"openapi/internal/infra/database"
 	"testing"
 
 	"github.com/google/uuid"
 )
-
 
 func TestDeleteSuccess(t *testing.T) {
 	// Setup
@@ -17,7 +17,7 @@ func TestDeleteSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer db.Close()
-	repository := &repository.StockItem{DB: db}
+	repository := &item.Repository{DB: db}
 
 	// Given
 	reqCreateDto := &stockitem.CreateRequestDto{

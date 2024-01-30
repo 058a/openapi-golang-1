@@ -1,7 +1,7 @@
-package model_test
+package item_test
 
 import (
-	"openapi/internal/domain/model"
+	"openapi/internal/domain/stock/item"
 	"testing"
 
 	"github.com/google/uuid"
@@ -11,7 +11,7 @@ func TestStockItemNew(t *testing.T) {
 	// When
 	id := uuid.New()
 	name := "test"
-	stockItem := model.NewStockItem(id, name)
+	stockItem := item.NewModel(id, name)
 
 	// Then
 	if stockItem.GetId().ToUuid() != id {
@@ -30,7 +30,7 @@ func TestStockItemDelete(t *testing.T) {
 	// Given
 	id := uuid.New()
 	name := "test"
-	stockItem := model.NewStockItem(id, name)
+	stockItem := item.NewModel(id, name)
 
 	// When
 	stockItem.Delete()

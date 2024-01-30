@@ -3,8 +3,7 @@ package stockitem
 import (
 	"github.com/google/uuid"
 
-	"openapi/internal/domain/model"
-	"openapi/internal/domain/repository"
+	"openapi/internal/domain/stock/item"
 )
 
 type CreateRequestDto struct {
@@ -15,9 +14,9 @@ type CreateResponseDto struct {
 	Id uuid.UUID
 }
 
-func Create(req *CreateRequestDto, r repository.IStockItem) (*CreateResponseDto, error) {
+func Create(req *CreateRequestDto, r item.IRepository) (*CreateResponseDto, error) {
 
-	model := model.NewStockItem(uuid.New(), req.Name)
+	model := item.NewModel(uuid.New(), req.Name)
 
 	err := r.Save(model)
 	if err != nil {
