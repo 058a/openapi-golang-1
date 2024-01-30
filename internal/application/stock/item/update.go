@@ -16,14 +16,14 @@ type UpdateResponseDto struct{}
 func Update(req *UpdateRequestDto, r item.IRepository) (*UpdateResponseDto, error) {
 
 	id := item.Id(req.Id)
-	model, err := r.Get(id)
+	aggregate, err := r.Get(id)
 	if err != nil {
 		return &UpdateResponseDto{}, err
 	}
 
-	model.SetName(req.Name)
+	aggregate.SetName(req.Name)
 
-	err = r.Save(model)
+	err = r.Save(aggregate)
 	if err != nil {
 		return &UpdateResponseDto{}, err
 	}

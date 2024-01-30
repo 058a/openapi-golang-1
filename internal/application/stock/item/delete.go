@@ -16,14 +16,14 @@ type DeleteResponseDto struct {
 func Delete(req *DeleteRequestDto, r item.IRepository) (*DeleteResponseDto, error) {
 
 	id := item.Id(req.Id)
-	model, err := r.Get(id)
+	aggregate, err := r.Get(id)
 	if err != nil {
 		return &DeleteResponseDto{}, err
 	}
 
-	model.Delete()
+	aggregate.Delete()
 
-	err = r.Save(model)
+	err = r.Save(aggregate)
 	if err != nil {
 		return &DeleteResponseDto{}, err
 	}

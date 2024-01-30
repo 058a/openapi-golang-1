@@ -16,14 +16,14 @@ type CreateResponseDto struct {
 
 func Create(req *CreateRequestDto, r item.IRepository) (*CreateResponseDto, error) {
 
-	model := item.NewModel(uuid.New(), req.Name)
+	aggregate := item.NewAggregate(uuid.New(), req.Name)
 
-	err := r.Save(model)
+	err := r.Save(aggregate)
 	if err != nil {
 		return nil, err
 	}
 
 	return &CreateResponseDto{
-		Id: model.GetId().ToUuid(),
+		Id: aggregate.GetId().ToUuid(),
 	}, nil
 }

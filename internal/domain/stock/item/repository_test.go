@@ -23,12 +23,12 @@ func TestStockItemSave(t *testing.T) {
 	// Given
 	id := uuid.New()
 	name := "test"
-	model := item.NewModel(id, name)
+	aggregate := item.NewAggregate(id, name)
 
 	// When
 	timeFormat := "2006/01/02 15:04:05.000000"
 	currentDateTime := time.Now().UTC().Format(timeFormat)
-	err = r.Save(model)
+	err = r.Save(aggregate)
 	if err != nil {
 		t.Fatal(err)
 	}

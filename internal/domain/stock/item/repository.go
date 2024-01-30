@@ -9,8 +9,8 @@ import (
 )
 
 type IRepository interface {
-	Save(m *Model) error
-	Get(id Id) (*Model, error)
+	Save(a *Aggregate) error
+	Get(id Id) (*Aggregate, error)
 	Find(id Id) (bool, error)
 }
 
@@ -19,11 +19,11 @@ type Repository struct {
 	Db *sql.DB
 }
 
-func (r *Repository) Save(m *Model) error {
+func (r *Repository) Save(a *Aggregate) error {
 
 	data := &sqlboiler.StockItem{
-		ID:   m.GetId().ToUuid().String(),
-		Name: m.GetName(),
+		ID:   a.GetId().ToUuid().String(),
+		Name: a.GetName(),
 	}
 
 	err := data.Upsert(
@@ -41,13 +41,13 @@ func (r *Repository) Save(m *Model) error {
 	return nil
 }
 
-func (r *Repository) Get(id Id) (*Model, error) {
+func (r *Repository) Get(id Id) (*Aggregate, error) {
 	data, err := sqlboiler.FindStockItem(context.Background(), r.Db, id.ToString())
 	if err != nil {
-		return &Model{}, err
+		return &Aggregate{}, err
 	}
 
-	model := &Model{
+	model := &Aggregate{
 		id:      id,
 		name:    data.Name,
 		deleted: data.Deleted,
