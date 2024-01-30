@@ -1,23 +1,40 @@
 package model
 
-import "github.com/google/uuid"
+import (
+	"openapi/internal/domain/entity"
 
-type StockItemId uuid.UUID
+	"github.com/google/uuid"
+)
 
 type StockItem struct {
-	Id   		StockItemId
-	Name 		string
-	Deleted bool
+	id      entity.StockItemId
+	name    string
+	deleted bool
 }
 
-func NewStockItem(id StockItemId, name string) *StockItem {
+func NewStockItem(id uuid.UUID, name string) *StockItem {
 	return &StockItem{
-		Id:   id,
-		Name: name,
-		Deleted: false,
+		id:      entity.StockItemId(id),
+		name:    name,
+		deleted: false,
 	}
 }
 
+func (s *StockItem) GetId() entity.StockItemId {
+	return s.id
+}
+
+func (s *StockItem) GetName() string {
+	return s.name
+}
+
+func (s *StockItem) IsDeleted() bool {
+	return s.deleted
+}
+func (s *StockItem) SetName(name string) {
+	s.name = name
+}
+
 func (s *StockItem) Delete() {
-	s.Deleted = true
+	s.deleted = true
 }

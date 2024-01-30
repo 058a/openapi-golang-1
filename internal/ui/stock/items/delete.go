@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"openapi/internal/application/stockitem"
-	"openapi/internal/domain/model"
+	"openapi/internal/domain/entity"
 	"openapi/internal/domain/repository"
 	"openapi/internal/infra/database"
 	oapicodegen "openapi/internal/infra/oapicodegen/stockitem"
@@ -29,17 +29,17 @@ func Delete(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid stock item id")
 	}
 
-	found, err := repository.Find(model.StockItemId(stockitemId))
+	found, err := repository.Find(entity.StockItemId(stockitemId))
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	if !found {
 		return echo.NewHTTPError(http.StatusNotFound, "stock item not found")
 	}
-	
+
 	// Main Process
 	reqDto := &stockitem.DeleteRequestDto{
-		Id:   stockitemId,
+		Id: stockitemId,
 	}
 	_, err = stockitem.Delete(reqDto, repository)
 	if err != nil {

@@ -2,7 +2,7 @@ package stockitem_test
 
 import (
 	"openapi/internal/application/stockitem"
-	"openapi/internal/domain/model"
+	"openapi/internal/domain/entity"
 	"openapi/internal/domain/repository"
 	"openapi/internal/infra/database"
 	"testing"
@@ -48,12 +48,12 @@ func TestUpdateSuccess(t *testing.T) {
 		t.Errorf("expected not empty, actual empty")
 	}
 
-	model, err := repository.Get(model.StockItemId(resCreateDto.Id))
+	model, err := repository.Get(entity.StockItemId(resCreateDto.Id))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if model.Name != afterName {
-		t.Errorf("expected %s, got %s", afterName, model.Name)
+	if model.GetName() != afterName {
+		t.Errorf("expected %s, got %s", afterName, model.GetName())
 	}
 }

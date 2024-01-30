@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"openapi/internal/domain/entity"
 	"openapi/internal/domain/model"
 	"openapi/internal/domain/repository"
 
@@ -24,8 +25,7 @@ func TestCreateSuccess(t *testing.T) {
 	r := &repository.StockItem{DB: db}
 
 	// Given
-	generatedUuid := uuid.New()
-	id := model.StockItemId(generatedUuid)
+	id := uuid.New()
 	name := uuid.NewString()
 	model := model.NewStockItem(id, name)
 	currentDateTime := time.Now()
@@ -37,25 +37,25 @@ func TestCreateSuccess(t *testing.T) {
 	}
 
 	// Then
-	data, err := sqlboiler.FindStockItem(context.Background(), db, generatedUuid.String())
+	data, err := sqlboiler.FindStockItem(context.Background(), db, model.GetId().ToString())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if data.ID != generatedUuid.String() {
-		t.Errorf("expected %s, got %s", generatedUuid.String(), data.ID)
+	if data.ID != id.String() {
+		t.Errorf("expected %s, got %s", id.String(), data.ID)
 	}
-	
+
 	if data.Name != name {
 		t.Errorf("expected %s, got %s", name, data.Name)
 	}
 
 	if data.CreatedAt.Before(currentDateTime) == true {
-		t.Errorf("expected %s, got %s", currentDateTime, data.CreatedAt)		
+		t.Errorf("expected %s, got %s", currentDateTime, data.CreatedAt)
 	}
 
 	if data.UpdatedAt.Before(currentDateTime) == true {
-		t.Errorf("expected %s, got %s", currentDateTime, data.UpdatedAt)		
+		t.Errorf("expected %s, got %s", currentDateTime, data.UpdatedAt)
 	}
 }
 
@@ -69,8 +69,7 @@ func TestUpdateSuccess(t *testing.T) {
 	r := &repository.StockItem{DB: db}
 
 	// Given
-	generatedUuid := uuid.New()
-	id := model.StockItemId(generatedUuid)
+	id := uuid.New()
 	beforeName := uuid.NewString()
 	afterName := uuid.NewString()
 	model := model.NewStockItem(id, beforeName)
@@ -81,47 +80,47 @@ func TestUpdateSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	beforeModel, err := r.Get(id)
+	beforeModel, err := r.Get(model.GetId())
 	if err != nil {
 		t.Fatal(err)
 	}
-	beforeData, err := sqlboiler.FindStockItem(context.Background(), db, generatedUuid.String())
+	beforeData, err := sqlboiler.FindStockItem(context.Background(), db, model.GetId().ToString())
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// When
-	beforeModel.Name = afterName
-	err = r.Save( beforeModel)
+	beforeModel.SetName(afterName)
+	err = r.Save(beforeModel)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	afterModel, err := r.Get(id)
+	afterModel, err := r.Get(model.GetId())
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// Then
-	data, err := sqlboiler.FindStockItem(context.Background(), db, generatedUuid.String())
+	data, err := sqlboiler.FindStockItem(context.Background(), db, model.GetId().ToString())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if data.ID != generatedUuid.String() {
-		t.Errorf("expected %s, got %s", generatedUuid.String(), data.ID)
+	if data.ID != model.GetId().ToString() {
+		t.Errorf("expected %s, got %s", model.GetId().ToString(), data.ID)
 	}
 
-	if data.Name != afterModel.Name {
-		t.Errorf("expected %s, got %s", afterModel.Name, data.Name)
+	if data.Name != afterModel.GetName() {
+		t.Errorf("expected %s, got %s", afterModel.GetName(), data.Name)
 	}
 
 	if data.CreatedAt.Equal(beforeData.CreatedAt) != true {
-		t.Errorf("expected %s, got %s", beforeData.CreatedAt, data.CreatedAt)		
+		t.Errorf("expected %s, got %s", beforeData.CreatedAt, data.CreatedAt)
 	}
 
 	if data.UpdatedAt.Before(currentDateTime) == true {
-		t.Errorf("expected %s, got %s", currentDateTime, data.UpdatedAt)		
+		t.Errorf("expected %s, got %s", currentDateTime, data.UpdatedAt)
 	}
 }
 
@@ -135,18 +134,17 @@ func TestFindSuccess(t *testing.T) {
 	r := &repository.StockItem{DB: db}
 
 	// Given
-	generatedUuid := uuid.New()
-	id := model.StockItemId(generatedUuid)
+	id := uuid.New()
 	name := uuid.NewString()
 	model := model.NewStockItem(id, name)
 
-	err = r.Save( model)
+	err = r.Save(model)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// When
-	found, err := r.Find( id)
+	found, err := r.Find(model.GetId())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -158,7 +156,6 @@ func TestFindSuccess(t *testing.T) {
 
 }
 
-
 func TestFindFailure(t *testing.T) {
 	// Setup
 	db, err := database.Open()
@@ -169,8 +166,7 @@ func TestFindFailure(t *testing.T) {
 	r := &repository.StockItem{DB: db}
 
 	// Given
-	generatedUuid := uuid.New()
-	id := model.StockItemId(generatedUuid)
+	id := entity.StockItemId(uuid.New())
 
 	// When
 	found, err := r.Find(id)

@@ -1,34 +1,33 @@
 package stockitem
 
 import (
+	"openapi/internal/domain/entity"
 	"openapi/internal/domain/repository"
-
-	"openapi/internal/domain/model"
 
 	"github.com/google/uuid"
 )
 
 type UpdateRequestDto struct {
 	Id   uuid.UUID
-	Name string	
+	Name string
 }
 
-type UpdateResponseDto struct {}
+type UpdateResponseDto struct{}
 
 func Update(req *UpdateRequestDto, r repository.IStockItem) (*UpdateResponseDto, error) {
 
-	id := model.StockItemId(req.Id)
-	model, err := r.Get( id)
+	id := entity.StockItemId(req.Id)
+	model, err := r.Get(id)
 	if err != nil {
 		return &UpdateResponseDto{}, err
 	}
 
-	model.Name = req.Name
+	model.SetName(req.Name)
 
 	err = r.Save(model)
 	if err != nil {
 		return &UpdateResponseDto{}, err
 	}
-	
+
 	return &UpdateResponseDto{}, nil
 }

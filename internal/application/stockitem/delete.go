@@ -1,7 +1,7 @@
 package stockitem
 
 import (
-	"openapi/internal/domain/model"
+	"openapi/internal/domain/entity"
 	"openapi/internal/domain/repository"
 
 	"github.com/google/uuid"
@@ -15,19 +15,19 @@ type DeleteResponseDto struct {
 }
 
 func Delete(req *DeleteRequestDto, r repository.IStockItem) (*DeleteResponseDto, error) {
-	
-	id := model.StockItemId(req.Id)
+
+	id := entity.StockItemId(req.Id)
 	model, err := r.Get(id)
 	if err != nil {
 		return &DeleteResponseDto{}, err
 	}
 
-	model.Deleted = true
+	model.Delete()
 
-	err = r.Save( model)
+	err = r.Save(model)
 	if err != nil {
 		return &DeleteResponseDto{}, err
 	}
-	
+
 	return &DeleteResponseDto{}, nil
 }

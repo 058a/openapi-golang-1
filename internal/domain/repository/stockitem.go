@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"openapi/internal/domain/entity"
 	"openapi/internal/domain/model"
 	"openapi/internal/infra/sqlboiler"
 
@@ -13,8 +14,8 @@ import (
 
 type IStockItem interface {
 	Save(model *model.StockItem) error
-	Get(stockItemId model.StockItemId) (*model.StockItem, error)
-	Find(stockItemId model.StockItemId) (bool, error)
+	Get(stockItemId entity.StockItemId) (*model.StockItem, error)
+	Find(stockItemId entity.StockItemId) (bool, error)
 }
 
 type StockItem struct {
@@ -25,8 +26,8 @@ type StockItem struct {
 func (r *StockItem) Save(model *model.StockItem) error {
 
 	data := &sqlboiler.StockItem{
-		ID:   uuid.UUID(model.Id).String(),
-		Name: model.Name,
+		ID:   model.GetId().ToUuid().String(),
+		Name: model.GetName(),
 	}
 
 	err := data.Upsert(
@@ -34,7 +35,7 @@ func (r *StockItem) Save(model *model.StockItem) error {
 		r.DB,
 		true,
 		[]string{"id"},
-		boil.Whitelist("name","deleted"),
+		boil.Whitelist("name", "deleted"),
 		boil.Infer(),
 	)
 	if err != nil {
@@ -44,26 +45,25 @@ func (r *StockItem) Save(model *model.StockItem) error {
 	return nil
 }
 
-func (r *StockItem) Get(stockItemId model.StockItemId) (*model.StockItem, error) {
+func (r *StockItem) Get(stockItemId entity.StockItemId) (*model.StockItem, error) {
 
-	id := uuid.UUID(stockItemId).String()
+	id := stockItemId.ToUuid().String()
 	data, err := sqlboiler.FindStockItem(context.Background(), r.DB, id)
 	if err != nil {
 		return &model.StockItem{}, err
 	}
 
-	model := model.NewStockItem(stockItemId, data.Name)
-	
+	model := model.NewStockItem(stockItemId.ToUuid(), data.Name)
+
 	return model, nil
 }
 
-
-func (r *StockItem) Find(stockItemId model.StockItemId) (bool, error) {
+func (r *StockItem) Find(stockItemId entity.StockItemId) (bool, error) {
 	id := uuid.UUID(stockItemId).String()
 	found, err := sqlboiler.StockItemExists(context.Background(), r.DB, id)
 	if err != nil {
 		return false, err
 	}
-	
+
 	return found, nil
 }

@@ -8,7 +8,7 @@ import (
 )
 
 type CreateRequestDto struct {
-	Name string	
+	Name string
 }
 
 type CreateResponseDto struct {
@@ -17,8 +17,7 @@ type CreateResponseDto struct {
 
 func Create(req *CreateRequestDto, r repository.IStockItem) (*CreateResponseDto, error) {
 
-	id := model.StockItemId(uuid.New())
-	model := model.NewStockItem(id, req.Name)
+	model := model.NewStockItem(uuid.New(), req.Name)
 
 	err := r.Save(model)
 	if err != nil {
@@ -26,6 +25,6 @@ func Create(req *CreateRequestDto, r repository.IStockItem) (*CreateResponseDto,
 	}
 
 	return &CreateResponseDto{
-		Id: uuid.UUID(model.Id),
+		Id: model.GetId().ToUuid(),
 	}, nil
 }
