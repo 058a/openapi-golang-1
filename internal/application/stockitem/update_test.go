@@ -17,7 +17,7 @@ func TestUpdateSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer db.Close()
-	repository := &item.Repository{DB: db}
+	repository := &item.Repository{Db: db}
 
 	// Given
 	beforeName := uuid.NewString()

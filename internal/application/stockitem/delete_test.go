@@ -17,7 +17,7 @@ func TestDeleteSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer db.Close()
-	repository := &item.Repository{DB: db}
+	repository := &item.Repository{Db: db}
 
 	// Given
 	reqCreateDto := &stockitem.CreateRequestDto{

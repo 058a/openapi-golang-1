@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS stock_item;
+DROP TABLE IF EXISTS inbound_item;

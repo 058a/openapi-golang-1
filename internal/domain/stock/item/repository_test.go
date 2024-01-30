@@ -1,42 +1,61 @@
 package item_test
 
 import (
+	"context"
 	"openapi/internal/domain/stock/item"
+	"openapi/internal/infra/database"
+	"openapi/internal/infra/sqlboiler"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 )
 
-func TestStockItemNew(t *testing.T) {
-	// When
-	id := uuid.New()
-	name := "test"
-	stockItem := item.NewModel(id, name)
+func TestStockItemSave(t *testing.T) {
+	// Setup
+	db, err := database.Open()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	r := item.Repository{Db: db}
 
-	// Then
-	if stockItem.GetId().ToUuid() != id {
-		t.Errorf("expected %s, got %s", id, stockItem.GetId().ToUuid())
-	}
-	castedId := stockItem.GetId().ToUuid()
-	if castedId != id {
-		t.Errorf("expected %s, got %s", id, castedId)
-	}
-	if stockItem.GetName() != name {
-		t.Errorf("expected %s, got %s", name, stockItem.GetName())
-	}
-}
-
-func TestStockItemDelete(t *testing.T) {
 	// Given
 	id := uuid.New()
 	name := "test"
-	stockItem := item.NewModel(id, name)
+	model := item.NewModel(id, name)
 
 	// When
-	stockItem.Delete()
+	timeFormat := "2006/01/02 15:04:05.000000"
+	currentDateTime := time.Now().UTC().Format(timeFormat)
+	err = r.Save(model)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	// Then
-	if stockItem.IsDeleted() != true {
-		t.Errorf("expected %t, got %t", true, stockItem.IsDeleted())
+	data, err := sqlboiler.FindStockItem(context.Background(), db, id.String())
+	if err != nil {
+		t.Fatal(err)
 	}
+
+	if data.ID != id.String() {
+		t.Errorf("expected %s, got %s", id, data.ID)
+	}
+	if data.Name != name {
+		t.Errorf("expected %s, got %s", name, data.Name)
+	}
+	if data.Deleted != false {
+		t.Errorf("expected %t, got %t", false, data.Deleted)
+	}
+	if data.CreatedAt.Format(timeFormat) < currentDateTime {
+		t.Errorf("expected %s, got %s", currentDateTime, data.CreatedAt)
+	}
+	if data.UpdatedAt.Format(timeFormat) < currentDateTime {
+		t.Errorf("expected %s, got %s", currentDateTime, data.UpdatedAt)
+	}
+	if data.UpdatedAt.Format(timeFormat) != data.CreatedAt.Format(timeFormat) {
+		t.Errorf("expected %s, got %s", data.CreatedAt, data.UpdatedAt)
+	}
+
 }

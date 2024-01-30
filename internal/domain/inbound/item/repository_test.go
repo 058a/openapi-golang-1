@@ -11,18 +11,18 @@ func TestStockItemNew(t *testing.T) {
 	// When
 	id := uuid.New()
 	name := "test"
-	stockItem := item.NewModel(id, name)
+	model := item.NewModel(id, name)
 
 	// Then
-	if stockItem.GetId().ToUuid() != id {
-		t.Errorf("expected %s, got %s", id, stockItem.GetId().ToUuid())
+	if model.GetId().ToUuid() != id {
+		t.Errorf("expected %s, got %s", id, model.GetId().ToUuid())
 	}
-	castedId := stockItem.GetId().ToUuid()
+	castedId := model.GetId().ToUuid()
 	if castedId != id {
 		t.Errorf("expected %s, got %s", id, castedId)
 	}
-	if stockItem.GetName() != name {
-		t.Errorf("expected %s, got %s", name, stockItem.GetName())
+	if model.GetName() != name {
+		t.Errorf("expected %s, got %s", name, model.GetName())
 	}
 }
 
@@ -30,13 +30,13 @@ func TestStockItemDelete(t *testing.T) {
 	// Given
 	id := uuid.New()
 	name := "test"
-	stockItem := item.NewModel(id, name)
+	model := item.NewModel(id, name)
 
 	// When
-	stockItem.Delete()
+	model.Delete()
 
 	// Then
-	if stockItem.IsDeleted() != true {
-		t.Errorf("expected %t, got %t", true, stockItem.IsDeleted())
+	if model.IsDeleted() != true {
+		t.Errorf("expected %t, got %t", true, model.IsDeleted())
 	}
 }

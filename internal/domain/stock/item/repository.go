@@ -3,7 +3,6 @@ package item
 import (
 	"context"
 	"database/sql"
-
 	"openapi/internal/infra/sqlboiler"
 
 	"github.com/volatiletech/sqlboiler/v4/boil"
@@ -17,7 +16,7 @@ type IRepository interface {
 
 type Repository struct {
 	IRepository
-	*sql.DB
+	Db *sql.DB
 }
 
 func (r *Repository) Save(model *Model) error {
@@ -29,7 +28,7 @@ func (r *Repository) Save(model *Model) error {
 
 	err := data.Upsert(
 		context.Background(),
-		r.DB,
+		r.Db,
 		true,
 		[]string{"id"},
 		boil.Whitelist("name", "deleted"),
@@ -43,7 +42,7 @@ func (r *Repository) Save(model *Model) error {
 }
 
 func (r *Repository) Get(id Id) (*Model, error) {
-	data, err := sqlboiler.FindStockItem(context.Background(), r.DB, id.ToString())
+	data, err := sqlboiler.FindStockItem(context.Background(), r.Db, id.ToString())
 	if err != nil {
 		return &Model{}, err
 	}
@@ -54,7 +53,7 @@ func (r *Repository) Get(id Id) (*Model, error) {
 }
 
 func (r *Repository) Find(id Id) (bool, error) {
-	found, err := sqlboiler.StockItemExists(context.Background(), r.DB, id.ToString())
+	found, err := sqlboiler.StockItemExists(context.Background(), r.Db, id.ToString())
 	if err != nil {
 		return false, err
 	}

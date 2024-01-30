@@ -19,7 +19,7 @@ func Post(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	defer db.Close()
-	repository := &item.Repository{DB: db}
+	repository := &item.Repository{Db: db}
 
 	// Validation
 	req := &oapicodegen.PostStockItemJSONRequestBody{}
